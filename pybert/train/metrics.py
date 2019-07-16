@@ -257,6 +257,10 @@ class PrecisionScore(F1Score):
             precision = precision_score(y_true=self.y_true, y_pred=self.y_pred, average=self.average)
             return precision
 
+    def name(self):
+        return 'precision'
+
+
 class ClassReport(Metric):
     '''
     class report

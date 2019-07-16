@@ -89,7 +89,7 @@ class Trainer(object):
                 for metric in self.epoch_metrics:
                     metric(logits=self.outputs, target=self.targets)
                     value = metric.value()
-                    if value:
+                    if value is not None:
                         self.result[f'valid_{metric.name()}'] = value
             if len(self.n_gpu) > 0:
                 torch.cuda.empty_cache()
@@ -153,7 +153,7 @@ class Trainer(object):
             for metric in self.epoch_metrics:
                 metric(logits=self.outputs, target=self.targets)
                 value = metric.value()
-                if value:
+                if value is not None:
                     self.result[f'{metric.name()}'] = value
         if len(self.n_gpu) > 0:
             torch.cuda.empty_cache()
@@ -194,5 +194,4 @@ class Trainer(object):
                 self.early_stopping.epoch_step(epoch=epoch, current=logs[self.early_stopping.monitor])
                 if self.early_stopping.stop_training:
                     break
-
 
