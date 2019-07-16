@@ -14,7 +14,7 @@ from pybert.model.nn.bert_fine import BertFine
 from pybert.preprocessing.preprocessor import EnglishPreProcessor
 from pybert.callback.modelcheckpoint import ModelCheckpoint
 from pybert.callback.trainingmonitor import TrainingMonitor
-from pybert.train.metrics import F1Score, AccuracyThresh, MultiLabelReport
+from pybert.train.metrics import F1Score, AccuracyThresh, MultiLabelReport, PrecisionScore
 from pytorch_pretrained_bert.tokenization import BertTokenizer
 from pytorch_pretrained_bert.optimization import BertAdam
 warnings.filterwarnings("ignore")
@@ -63,14 +63,14 @@ def main():
                               batch_size=config['train']['batch_size'],
                               num_workers=config['train']['num_workers'],
                               shuffle=True,
-                              drop_last=False,
+                              drop_last=True,
                               pin_memory=False)
     # 验证数据集
     valid_loader = DataLoader(dataset=valid_dataset,
                               batch_size=config['train']['batch_size'],
                               num_workers=config['train']['num_workers'],
                               shuffle=False,
-                              drop_last=False,
+                              drop_last=True,
                               pin_memory=False)
 
     # **************************** 模型 ***********************
@@ -127,8 +127,8 @@ def main():
         'epochs': config['train']['epochs'],
         'n_gpu': config['train']['n_gpu'],
         'gradient_accumulation_steps': config['train']['gradient_accumulation_steps'],
-        'epoch_metrics': [F1Score(average='micro', task_type='binary'), MultiLabelReport(id2label=id2label)],
-        'batch_metrics': [AccuracyThresh(thresh=0.5), F1Score(average='micro', task_type='binary')],
+        'epoch_metrics': [F1Score(average='micro', task_type='binary'), MultiLabelReport(id2label=id2label), PrecisionScore(average='micro', task_type='binary')],
+        'batch_metrics': [AccuracyThresh(thresh=0.5), F1Score(average='micro', task_type='binary'), PrecisionScore(average='micro', task_type='binary')],
         'criterion': BCEWithLogLoss(),
         'model_checkpoint': model_checkpoint,
         'training_monitor': train_monitor,

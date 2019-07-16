@@ -4,9 +4,9 @@ from tqdm import tqdm
 import numpy as np
 from collections import Counter
 from sklearn.metrics import roc_auc_score
-from sklearn.metrics import f1_score, classification_report
+from sklearn.metrics import f1_score, classification_report, precision_score
 
-__call__ = ['Accuracy','AUC','F1Score','EntityScore','ClassReport','MultiLabelReport','AccuracyThresh']
+__call__ = ['Accuracy','AUC','F1Score','EntityScore','ClassReport','MultiLabelReport','AccuracyThresh', 'PrecisionScore']
 
 class Metric:
     def __init__(self):
@@ -246,6 +246,16 @@ class F1Score(Metric):
 
     def name(self):
         return 'f1'
+
+class PrecisionScore(F1Score):
+
+    def value(self):
+        if self.task_type == 'binary':
+            precision = precision_score(y_true=self.y_true, y_pred=self.y_pred, average=self.average)
+            return precision
+        if self.task_type == 'multiclass':
+            precision = precision_score(y_true=self.y_true, y_pred=self.y_pred, average=self.average)
+            return precision
 
 class ClassReport(Metric):
     '''
