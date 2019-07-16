@@ -102,3 +102,9 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Project
+pybert/dataset/
+pybert/model/
+pybert/output/
+.vscode

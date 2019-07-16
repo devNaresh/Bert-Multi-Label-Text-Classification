@@ -164,9 +164,9 @@ class DataTransformer(object):
         data = pd.read_csv(raw_data_path)
         for row in tqdm(data.values):
             if is_train:
-                target = row[2:]
+                target = row[3:]
             else:
-                target = [-1,-1,-1,-1,-1,-1]
+                target = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
             sentence = str(row[1])
             # 预处理
             if preprocessor:

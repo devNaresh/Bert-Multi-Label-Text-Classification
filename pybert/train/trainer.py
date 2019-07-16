@@ -111,6 +111,10 @@ class Trainer(object):
             segment_ids = segment_ids.to(self.device)
             label = label_ids.to(self.device)
             logits = self.model(input_ids, segment_ids,input_mask)
+            # y_pred = logits.sigmoid()
+            # y_pred = (y_pred >= 0.5)
+            # y_pred = y_pred.cpu().numpy()
+            # self.logger.info(f"Y Predicted Sum ==== {y_pred.sum(axis=1)}")
             # 计算batch loss
             loss = self.criterion(output=logits,target=label)
             if len(self.n_gpu) >= 2:
